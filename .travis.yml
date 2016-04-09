@@ -1,0 +1,39 @@
+language: generic
+sudo: false
+
+branches:
+  only:
+    - master
+
+env:
+  global:
+    - UPSTREAM_REPO="TheMarex/example-travis-upstream"
+    # GITHUB_TOKEN
+    - secure: "mQSIZaGqW2fVBZDrsIOfpMkoOVoWkaEdQtzaJpjqn16BWHRt1JrqpKcGIcTbm4YJ1wIMDhpSkb28EhODUBQ7CT2azwBNO9fR2qy9tLRbUHcMIr5cGLnqV268RtQaf921nTbqTgHedgbiseOGCfHno235j4tRSIpkxc2YUmc3PQkDgETTjzcmTNM46qCt+b7YqHA32zHmLfB6UBUOxDRKYJe2ZmOdkSEpuvY6LOfiPgPbEQq6GlLB4ng3fQl8gE8viyDm/eMaqRaciD8qgAy7B3/CacivpAG4Detk0Eu/giDvwHElejkmzl3US64Z6DGJWwrgXJuTH8FPHd6ezBuMq9LENrnt+WTBEwiaJ6hPx9nwsfcrohRyLVRzY11cpxoTZhL1jPgHZ2YIGf0iVl0JSqqUT2/0Ni4xn+05vJjqFtqoB3IbVHQE2aRGtfFGeYCN80YWwgoI0dXzmhNyWSIe2q5Yo4RFdMDB90J5nPywsMZvPGlGl2DnMyK7EB3UebpUTz/g+Npe5oR+c3ePPu8QsYXBeQ7O6HSg+rWqWscWrfOIKPZotZb/oHmekQO8x5euZwO81SxzWfGQoOQBGlxHOKdQzhM/Nt6i1wTRggkAQUIE2SrvVWjgB0h51Nf1SHSE49IULAxuzSZhMQ5nsRP+sDXN/3yijVFE8yampoWsMDs="
+
+matrix:
+  include:
+    - env: FAIL=false
+    - env: FAIL=true
+    - env: FAIL=false
+
+script:
+  - export DOWNSTREAM_REPO="${TRAVIS_REPO_SLUG}"
+  - echo "[${DOWNSTREAM_REPO}] Building ${TRAVIS_BUILD_NUMBER} triggered by ${TRIGGER_COMMIT}"
+  - |
+    if [[ ${FAIL} ]]; then
+      exit 1
+    fi
+
+after_success:
+  - |
+    if [[ -n "${TRIGGER_COMMIT} "]]; then
+      ./scripts/notif-upstream.sh success
+    fi
+
+after_failure:
+  - |
+    if [[ -n "${TRIGGER_COMMIT} "]]; then
+      ./scripts/notif-upstream.sh failure
+    fi
+
