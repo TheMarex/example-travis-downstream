@@ -20,7 +20,6 @@ post_status() {
     curl -s -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -H "Travis-API-Version: 3" \
       -H "Authorization: token ${GITHUB_TOKEN}" \
       -d "${GITHUB_MSG}" \
       "https://api.github.com/repos/${UPSTREAM_REPO}/statuses/${TRIGGER_COMMIT}"

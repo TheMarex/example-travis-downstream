@@ -21,7 +21,7 @@ script:
   - export DOWNSTREAM_REPO="${TRAVIS_REPO_SLUG}"
   - echo "[${DOWNSTREAM_REPO}] Building ${TRAVIS_BUILD_NUMBER} triggered by ${TRIGGER_COMMIT}"
   - |
-    if [[ ${FAIL} ]]; then
+    if ${FAIL}; then
       exit 1
     fi
 
