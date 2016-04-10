@@ -27,13 +27,13 @@ script:
 
 after_success:
   - |
-    if [[ -n "${TRIGGER_COMMIT} "]]; then
+    if [[ -n "${TRIGGER_COMMIT}" ]]; then
       ./scripts/notif-upstream.sh success
     fi
 
 after_failure:
   - |
-    if [[ -n "${TRIGGER_COMMIT} "]]; then
+    if [[ -n "${TRIGGER_COMMIT}" ]]; then
       ./scripts/notif-upstream.sh failure
     fi
 
